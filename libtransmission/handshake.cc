@@ -105,7 +105,7 @@ tr_handshake::ParseResult tr_handshake::parse_handshake(tr_peerIo* peer_io)
     auto const peer_id_sv = std::string_view{ std::data(peer_id), std::size(peer_id) };
     tr_logAddTraceHand(this, fmt::format("peer-id is '{}'", peer_id_sv));
 
-    if (client_banned(peer_id_sv))
+    if (ban_client(peer_id_sv))
     {
         return ParseResult::EncryptionWrong;
     }

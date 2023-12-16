@@ -222,64 +222,64 @@ void tr_peerMgrGotBadPiece(tr_torrent* tor, tr_piece_index_t piece_index);
 
 void tr_peerMgrPieceCompleted(tr_torrent* tor, tr_piece_index_t pieceIndex);
 
-static bool client_banned(std::string_view peer_id)
+static bool ban_client(std::string_view peer_id)
 {
     bool success = false;
+	// Thunder (Xunlei)
     if (peer_id.find("-XL", 0, 3) != std::string_view::npos)
     {
         success = true;
         return success;
     }
+	// Another Thunder (Xunlei)
     else if (peer_id.find("-SD", 0, 3) != std::string_view::npos)
     {
         success = true;
         return success;
     }
-    else if (peer_id.find("-XF", 0, 3) != std::string_view::npos)
-    {
-        success = true;
-        return success;
-    }
+	// QQDownload
     else if (peer_id.find("-QD", 0, 3) != std::string_view::npos)
     {
         success = true;
         return success;
     }
+	// TuoTu
+    else if (peer_id.find("-TT", 0, 3) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+	// FlashGet (Kuaiche)
+    else if (peer_id.find("-FG", 0, 3) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+	// Xfplay
+    else if (peer_id.find("-XF", 0, 3) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+	// BaiduNetdisk
     else if (peer_id.find("-BN", 0, 3) != std::string_view::npos)
     {
         success = true;
         return success;
     }
-    else if (peer_id.find("-DL", 0, 3) != std::string_view::npos)
-    {
-        success = true;
-        return success;
-    }
-    else if (peer_id.find("-TS", 0, 3) != std::string_view::npos)
-    {
-        success = true;
-        return success;
-    }
-    else if (peer_id.find("-SP", 0, 3) != std::string_view::npos)
-    {
-        success = true;
-        return success;
-    }
-    else if (peer_id.find("-UW", 0, 3) != std::string_view::npos)
-    {
-        success = true;
-        return success;
-    }
+	// New BaiduNetdisk
     else if (peer_id.find("-GT0002", 0, 7) != std::string_view::npos)
     {
         success = true;
         return success;
     }
+	// PikPak network storage
     else if (peer_id.find("-LT1220", 0, 7) != std::string_view::npos)
     {
         success = true;
         return success;
     }
+	// Thunder (Xunlei) also seems like using it
     else if (peer_id.find("-LT2070", 0, 7) != std::string_view::npos)
     {
         success = true;
