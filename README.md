@@ -1,29 +1,36 @@
-### Introduction
-This is a Modified version of Transmission BitTorrent client, based on official 4.0.4 version.
+## Introduction
 
-### What can it do
-Block bad peer like Thunder (Xunlei)
+---
 
-Block P2P media player like Xfplay
+This is a modified version of Transmission BitTorrent client, based on official 4.0.4 release.
 
+## What can it do
+
+---
+
+Block bad peer like Thunder (Xunlei)  
+Block P2P media player like Xfplay  
 Block bad offline downloader like BaiduNetdisk
 
-### Build (Only for Ubuntu ≥20.04)
+## Build (Only for Ubuntu ≥20.04)
+
+---
 
 ```
-	sudo apt-get install build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev libssl-dev libsystemd-dev
+    sudo apt-get install build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev libssl-dev libsystemd-dev
     git clone --recurse-submodules https://github.com/transmission/transmission Transmission
     cd Transmission
     cmake -DCMAKE_BUILD_TYPE=Release ..
-	cd build
+    cd build
     cmake --build .
     sudo cmake --install .
 ```
 
-### For systemctl service
+## For systemctl service
 
-In /lib/systemd/system directory, create a file named transmission-daemon.service with follow content.
+---
 
+In /lib/systemd/system directory, create a file named transmission-daemon.service with follow content.  
 Also, make sure you have created user "transmission" or alternative.
 
 ```
@@ -47,6 +54,8 @@ WantedBy=multi-user.target
 ```
 
 ### For init.d script
+
+---
 
 ```
 N INIT INFO
