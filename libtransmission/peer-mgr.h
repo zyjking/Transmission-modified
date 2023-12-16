@@ -222,4 +222,70 @@ void tr_peerMgrGotBadPiece(tr_torrent* tor, tr_piece_index_t piece_index);
 
 void tr_peerMgrPieceCompleted(tr_torrent* tor, tr_piece_index_t pieceIndex);
 
+static bool client_banned(std::string_view peer_id)
+{
+    bool success = false;
+    if (peer_id.find("-XL", 0, 3) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-SD", 0, 3) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-XF", 0, 3) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-QD", 0, 3) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-BN", 0, 3) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-DL", 0, 3) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-TS", 0, 3) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-SP", 0, 3) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-UW", 0, 3) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-GT0002", 0, 7) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-LT1220", 0, 7) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-LT2070", 0, 7) != std::string_view::npos)
+    {
+        success = true;
+        return success;
+    }
+    return success;
+}
+
 /* @} */

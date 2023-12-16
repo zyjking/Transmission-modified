@@ -24,6 +24,7 @@
 #include "tr-assert.h"
 #include "tr-buffer.h"
 #include "utils.h"
+#include "peer-mgr.h"
 
 #define tr_logAddTraceHand(handshake, msg) tr_logAddTrace(msg, (handshake)->peer_io_->display_name())
 
@@ -103,6 +104,11 @@ tr_handshake::ParseResult tr_handshake::parse_handshake(tr_peerIo* peer_io)
     /* peer id */
     auto const peer_id_sv = std::string_view{ std::data(peer_id), std::size(peer_id) };
     tr_logAddTraceHand(this, fmt::format("peer-id is '{}'", peer_id_sv));
+
+    if (client_banned(peer_id_sv))
+    {
+        return ParseResult::EncryptionWrong;
+    }
 
     if (auto const info = mediator_->torrent(info_hash); info && info->client_peer_id == peer_id)
     {
