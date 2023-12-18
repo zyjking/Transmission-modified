@@ -1,10 +1,10 @@
 ## Introduction
 
-This is a modified version of Transmission BitTorrent client, based on official 4.0.4 release.
+This is a modified version of Transmission BitTorrent client, based on official 4.0.5 release.
 
 ## What can it do
 
-Block bad peer like Thunder (Xunlei).  
+Block bad client like Thunder (Xunlei).  
 Block P2P media player like Xfplay.  
 Block bad offline downloader like BaiduNetdisk.
 

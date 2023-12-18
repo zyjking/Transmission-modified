@@ -224,7 +224,7 @@ void tr_peerMgrPieceCompleted(tr_torrent* tor, tr_piece_index_t pieceIndex);
 
 // https://github.com/arvidn/libtorrent/tree/RC_2_0/src/identify_client.cpp
 // https://github.com/transmission/transmission/tree/main/libtransmission/clients.cc
-static bool ban_client(std::string_view peer_id)
+bool ban_client(std::string_view peer_id)
 {
     bool success = false;
 	// Thunder (Xunlei)
