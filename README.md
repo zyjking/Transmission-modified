@@ -22,8 +22,8 @@ Block bad offline downloader like BaiduNetdisk.
 
 ## For systemctl service
 
-In /lib/systemd/system directory, create a file named transmission-daemon.service with following content.  
-Also, make sure you have created user "transmission" or alternative.
+In ```/lib/systemd/system``` directory, create a file named ```transmission-daemon.service``` with following content.  
+Also, make sure you have created user ```transmission``` or alternative.
 
 ```
 [Unit]
@@ -47,7 +47,7 @@ WantedBy=multi-user.target
 
 ## For init.d script
 
-In /etc/init.d directory, create a file named transmission-daemon with following content.  
+In ```/etc/init.d``` directory, create a file named ```transmission-daemon``` with following content.  
 
 ```
 N INIT INFO

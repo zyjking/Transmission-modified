@@ -224,6 +224,7 @@ void tr_peerMgrPieceCompleted(tr_torrent* tor, tr_piece_index_t pieceIndex);
 
 // https://github.com/arvidn/libtorrent/tree/RC_2_0/src/identify_client.cpp
 // https://github.com/transmission/transmission/tree/main/libtransmission/clients.cc
+// https://github.com/c0re100/qBittorrent-Enhanced-Edition/tree/v4_6_x/src/base/bittorrent/peer_blacklist.hpp
 static bool ban_client(std::string_view peer_id)
 {
     bool success = false;
@@ -233,7 +234,7 @@ static bool ban_client(std::string_view peer_id)
         success = true;
         return success;
     }
-	// Another Thunder (Xunlei)
+	// Thunder (Xunlei)
     else if (peer_id.find("-SD", 0, 3) != std::string_view::npos)
     {
         success = true;
