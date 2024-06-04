@@ -1,6 +1,6 @@
 ## Introduction
 
-This is a modified version of the Transmission BitTorrent client, based on the official 4.0.5 release.
+This is a modified version of the Transmission BitTorrent client, based on the official 4.0.6 release.
 
 ## What can it do
 
