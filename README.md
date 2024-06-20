@@ -11,10 +11,10 @@ Block bad offline downloaders like BaiduNetdisk.
 ## Build (Only for Ubuntu ≥20.04)
 
 ```
-    $ sudo apt-get install build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev libssl-dev libsystemd-dev
+    $ sudo apt-get install build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev libssl-dev libsystemd-dev libsystemd-dev
     $ git clone --recurse-submodules https://github.com/zyjking/Transmission-modified Transmission
     $ cd Transmission
-    $ cmake -DCMAKE_BUILD_TYPE=Release ..
+    $ cmake -DCMAKE_BUILD_TYPE=Release .
     $ cd build
     $ cmake --build .
     $ sudo cmake --install .
