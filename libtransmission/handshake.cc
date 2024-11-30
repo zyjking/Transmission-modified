@@ -20,7 +20,6 @@
 #include "handshake.h"
 #include "log.h"
 #include "peer-io.h"
-#include "peer-mgr.h"
 #include "timer.h"
 #include "tr-assert.h"
 #include "tr-buffer.h"
