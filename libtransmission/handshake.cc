@@ -108,7 +108,7 @@ tr_handshake::ParseResult tr_handshake::parse_handshake(tr_peerIo* peer_io)
     {
         return ParseResult::EncryptionWrong;
     }
-	
+
     if (auto const info = mediator_->torrent(info_hash); info && info->client_peer_id == peer_id)
     {
         tr_logAddTraceHand(this, "streuth!  we've connected to ourselves.");
