@@ -4,19 +4,18 @@ This is a modified version of the Transmission BitTorrent client, based on the o
 
 ## What can it do
 
-Block bad clients like Thunder (Xunlei).  
-Block P2P media players like Xfplay.  
-Block bad offline downloaders like BaiduNetdisk.
+Block bad clients such as Thunder (Xunlei).  
+Block P2P media players such as Xfplay.  
+Block bad offline downloaders such as BaiduNetdisk.
 
-## Build (Only for Ubuntu ≥20.04)
+## Build (Only for Ubuntu ≥22.04)
 
 ```
     $ sudo apt update
-    $ sudo apt install build-essential automake autoconf cmake libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libappindicator3-dev libssl-dev libsystemd-dev
+    $ sudo apt install build-essential automake autoconf cmake libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libgtkmm-4.0-dev libglibmm-2.68-dev libssl-dev libsystemd-dev
     $ git clone --recurse-submodules https://github.com/zyjking/Transmission-modified Transmission
     $ cd Transmission
     $ cmake -DCMAKE_BUILD_TYPE=Release .
-    $ cd build
     $ cmake --build .
     $ sudo cmake --install .
 ```

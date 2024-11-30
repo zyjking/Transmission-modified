@@ -329,3 +329,81 @@ private:
 
     bool have_sent_bittorrent_handshake_ = false;
 };
+
+static bool is_bad_peer(std::string_view peer_id)
+    {
+        const std::regex filter("-(XL|SD|XF|QD|BN|DL|SP|DT|HP|XM|GT0002|LT1220|LT2070)");
+
+        const std::string peer_id_s(peer_id.data(), peer_id.size());
+
+        return peer_id_s.empty() || std::regex_match(peer_id_s.begin(), peer_id_s.end(), filter);
+
+    }
+
+/*
+static bool client_banned(std::string_view peer_id)
+{
+    bool success = false;
+    if (peer_id.find("-XL", 0, 3) != std::string_view::npos) //Thunder (Xunlei)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-SD", 0, 3) != std::string_view::npos) //Thunder (Xunlei)
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-XF", 0, 3) != std::string_view::npos) //Xfplay
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-QD", 0, 3) != std::string_view::npos) //QQDownload
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-BN", 0, 3) != std::string_view::npos) //BaiduNetdisk
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-DL", 0, 3) != std::string_view::npos) //Bad Peer ID from China
+    {
+        success = true;
+        return success;
+    }
+	else if (peer_id.find("-DT", 0, 3) != std::string_view::npos) //Bad Peer ID from China
+    {
+        success = true;
+        return success;
+    }
+	else if (peer_id.find("-HP", 0, 3) != std::string_view::npos) //Bad Peer ID from China
+    {
+        success = true;
+        return success;
+    }
+	else if (peer_id.find("-XM", 0, 3) != std::string_view::npos) //Bad Peer ID from China
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-GT0002", 0, 7) != std::string_view::npos) //BaiduNetdisk
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-LT1220", 0, 7) != std::string_view::npos) //PikPak
+    {
+        success = true;
+        return success;
+    }
+    else if (peer_id.find("-LT2070", 0, 7) != std::string_view::npos) //Thunder (Xunlei)
+    {
+        success = true;
+        return success;
+    }
+    return success;
+}
+*/

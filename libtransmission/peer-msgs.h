@@ -88,4 +88,60 @@ tr_peerMsgs* tr_peerMsgsNew(
     tr_peer_callback callback,
     void* callback_data);
 
+static bool ua_banned(const char* ua)
+{
+    bool success = false;
+    if (std::memcmp(ua, "cacao_torrent", 13) == 0)
+    {
+        success = true;
+        return success;
+    }
+    else if (std::memcmp(ua, "trafficConsume", 14) == 0)
+    {
+        success = true;
+        return success;
+    }
+    else if (std::memcmp(ua, "(Taipei-Torrent dev", 19) == 0)
+    {
+        success = true;
+        return success;
+    }
+    else if (std::memcmp(ua, "hp/torrent", 10) == 0)
+    {
+        success = true;
+        return success;
+    }
+    else if (std::memcmp(ua, "dt/torrent", 10) == 0)
+    {
+        success = true;
+        return success;
+    }
+    else if (std::memcmp(ua, "xm/torrent", 10) == 0)
+    {
+        success = true;
+        return success;
+    }
+	else if (std::memcmp(ua, "gitlab.i.ljyun.cn", 17) == 0)
+    {
+        success = true;
+        return success;
+    }
+	else if (std::memcmp(ua, "github.com/anacrolix/torrent (devel) (anacrolix/torrent unknown)", 64) == 0)
+    {
+        success = true;
+        return success;
+    }
+	else if (std::memcmp(ua, "gobind (devel) (anacrolix/torrent unknown)", 42) == 0)
+    {
+        success = true;
+        return success;
+    }
+    else if (std::memcmp(ua, "offline-download (devel) (anacrolix/torrent unknown)", 52) == 0)
+    {
+        success = true;
+        return success;
+    }
+    return success;
+}
+
 /* @} */

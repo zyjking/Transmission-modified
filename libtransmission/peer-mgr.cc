@@ -1067,7 +1067,7 @@ void create_bit_torrent_peer(tr_torrent* tor, std::shared_ptr<tr_peerIo> io, str
 		auto const bad_peer = result.peer_id.value();
 		auto const bad_peer_sv = std::string_view{ std::data(bad_peer), std::size(bad_peer) };
 
-        if (((atom->flags2 & MyflagBanned) | (client_banned(bad_peer_sv))) != 0)
+        if (((atom->flags2 & MyflagBanned) | (is_bad_peer(bad_peer_sv))) != 0)
         {
             tr_logAddTraceSwarm(s, fmt::format("banned peer {} tried to reconnect", atom->display_name()));
         }
@@ -1974,6 +1974,16 @@ auto constexpr MaxUploadIdleSecs = time_t{ 60 * 5 };
         tr_logAddTraceSwarm(s, fmt::format("purging peer {} because its do_purge flag is set", peer->display_name()));
         return true;
     }
+
+    auto stats = tr_peer_stat{};
+    stats.client = peer->client.c_str();
+
+    if (ua_banned(stats.client))
+    {
+        tr_logAddTraceSwarm(s, fmt::format("banned ua tried to reconnect", peer->display_name()));
+        return true;
+    }
+
 
     auto const* tor = s->tor;
     auto const* const atom = peer->atom;
