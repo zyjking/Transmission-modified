@@ -331,9 +331,9 @@ private:
     bool have_sent_bittorrent_handshake_ = false;
 };
 
-bool is_bad_peer(std::string_view peer_id)
+static bool is_bad_peer(std::string_view peer_id)
     {
-    const std::regex filter("-(XL|SD|XF|QD|BN|DL|SP|DT|HP|XM|GT0002|LT1220|LT2070)");
+    const std::regex filter("^-(XL|SD|XF|QD|BN|DL|SP|DT|HP|XM|GT0002|LT1220|LT2070)");
 
     const std::string peer_id_s(peer_id.data(), peer_id.size());
 
