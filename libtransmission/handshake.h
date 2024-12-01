@@ -337,7 +337,7 @@ static bool is_bad_peer(std::string_view peer_id)
 
     const std::string peer_id_s(peer_id.data(), peer_id.size());
 
-    return peer_id_s.empty() || std::regex_match(peer_id_s.begin(), peer_id_s.end(), filter);
+    return peer_id_s.empty() || std::regex_search(peer_id_s.begin(), peer_id_s.end(), filter);
     }
 
 /*
