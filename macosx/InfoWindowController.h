@@ -1,4 +1,4 @@
-// This file Copyright © 2006-2023 Transmission authors and contributors.
+// This file Copyright © Transmission authors and contributors.
 // It may be used under the MIT (SPDX: MIT) license.
 // License text can be found in the licenses/ folder.
 
@@ -12,6 +12,7 @@
 @property(nonatomic, readonly) BOOL canQuickLook;
 
 - (void)setInfoForTorrents:(NSArray<Torrent*>*)torrents;
+- (void)removeTorrentsFromInfo:(NSArray<Torrent*>*)torrents;
 - (void)updateInfoStats;
 - (void)updateOptions;
 

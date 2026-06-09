@@ -1,4 +1,4 @@
-// This file Copyright © 2009-2023 Transmission authors and contributors.
+// This file Copyright © Transmission authors and contributors.
 // It may be used under the MIT (SPDX: MIT) license.
 // License text can be found in the licenses/ folder.
 
@@ -12,6 +12,20 @@
 @end
 
 @implementation TrackerNode
+
++ (NSDateFormatter*)dateFormatter
+{
+    static NSDateFormatter* formatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        formatter = [[NSDateFormatter alloc] init];
+        formatter.dateStyle = NSDateFormatterFullStyle;
+        formatter.timeStyle = NSDateFormatterShortStyle;
+        formatter.doesRelativeDateFormatting = YES;
+        formatter.timeZone = NSTimeZone.localTimeZone;
+    });
+    return formatter;
+}
 
 - (instancetype)initWithTrackerView:(tr_tracker_view const*)stat torrent:(Torrent*)torrent
 {
@@ -58,7 +72,7 @@
 
 - (NSString*)host
 {
-    return @(self.fStat.host);
+    return @(self.fStat.host_and_port);
 }
 
 - (NSString*)fullAnnounceAddress
@@ -96,12 +110,7 @@
     NSString* dateString;
     if (self.fStat.hasAnnounced)
     {
-        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateStyle = NSDateFormatterFullStyle;
-        dateFormatter.timeStyle = NSDateFormatterShortStyle;
-        dateFormatter.doesRelativeDateFormatting = YES;
-
-        dateString = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.fStat.lastAnnounceTime]];
+        dateString = [self.class.dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.fStat.lastAnnounceTime]];
     }
     else
     {
@@ -190,12 +199,7 @@
     NSString* dateString;
     if (self.fStat.hasScraped)
     {
-        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateStyle = NSDateFormatterFullStyle;
-        dateFormatter.timeStyle = NSDateFormatterShortStyle;
-        dateFormatter.doesRelativeDateFormatting = YES;
-
-        dateString = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.fStat.lastScrapeTime]];
+        dateString = [self.class.dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.fStat.lastScrapeTime]];
     }
     else
     {

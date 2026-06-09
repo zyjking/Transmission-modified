@@ -1,10 +1,11 @@
-// This file Copyright © 2012-2023 Mnemosyne LLC.
+// This file Copyright © Mnemosyne LLC.
 // It may be used under GPLv2 (SPDX: GPL-2.0-only), GPLv3 (SPDX: GPL-3.0-only),
 // or any future license endorsed by Mnemosyne LLC.
 // License text can be found in the licenses/ folder.
 
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 
 #include <libtransmission/transmission.h>
 
@@ -21,13 +22,12 @@ namespace
 
 QString getNameFromMetainfo(QByteArray const& benc)
 {
-    auto metainfo = tr_torrent_metainfo{};
-    if (!metainfo.parseBenc({ benc.constData(), static_cast<size_t>(benc.size()) }))
+    if (auto metainfo = tr_torrent_metainfo{}; metainfo.parse_benc({ benc.constData(), static_cast<size_t>(benc.size()) }))
     {
-        return {};
+        return QString::fromStdString(metainfo.name());
     }
 
-    return QString::fromStdString(metainfo.name());
+    return {};
 }
 
 QString getNameFromMagnet(QString const& magnet)
@@ -44,7 +44,8 @@ QString getNameFromMagnet(QString const& magnet)
         return QString::fromStdString(tmp.name());
     }
 
-    return QString::fromStdString(tmp.infoHashString());
+    auto const& hashstr = tmp.info_hash_string();
+    return QString::fromUtf8(std::data(hashstr), std::size(hashstr));
 }
 
 } // namespace
@@ -54,22 +55,24 @@ int AddData::set(QString const& key)
     if (auto const key_std = key.toStdString(); tr_urlIsValid(key_std))
     {
         this->url = key;
-        type = URL;
-    }
-    else if (QFile(key).exists())
-    {
-        this->filename = QDir::fromNativeSeparators(key);
-        type = FILENAME;
-
-        auto file = QFile{ key };
-        file.open(QIODevice::ReadOnly);
-        this->metainfo = file.readAll();
-        file.close();
+        this->type = URL;
     }
     else if (tr_magnet_metainfo{}.parseMagnet(key_std))
     {
         this->magnet = key;
         this->type = MAGNET;
+    }
+    else if (auto const kurl = QUrl::fromUserInput(key, QDir::currentPath()); kurl.isValid() && kurl.isLocalFile())
+    {
+        if (auto file = QFile{ kurl.toLocalFile() }; file.exists())
+        {
+            this->filename = file.fileName();
+            this->type = FILENAME;
+
+            file.open(QIODevice::ReadOnly);
+            this->metainfo = file.readAll();
+            file.close();
+        }
     }
     else if (auto const raw = QByteArray::fromBase64(key.toUtf8()); !raw.isEmpty())
     {
@@ -81,7 +84,7 @@ int AddData::set(QString const& key)
         this->type = NONE;
     }
 
-    return type;
+    return this->type;
 }
 
 QByteArray AddData::toBase64() const
@@ -115,7 +118,7 @@ QString AddData::readableShortName() const
     switch (type)
     {
     case FILENAME:
-        return QFileInfo(filename).baseName();
+        return QFileInfo{ filename }.baseName();
 
     case URL:
         return url.path().split(QLatin1Char('/')).last();

@@ -1,126 +1,101 @@
-## Introduction
+## About
 
-This is a modified version of the Transmission BitTorrent client, based on the official 4.0.6 release.
+Transmission is a fast, easy, and free BitTorrent client. It comes in several flavors:
+  * A native macOS GUI application
+  * GTK+ and Qt GUI applications for Linux, BSD, etc.
+  * A Qt-based Windows-compatible GUI application
+  * A headless daemon for servers and routers
+  * A web UI for remote controlling any of the above
+  
+Visit https://transmissionbt.com/ for more information.
 
-## What can it do
+## Documentation
 
-Block bad clients such as Thunder (Xunlei).  
-Block P2P media players such as Xfplay.  
-Block bad offline downloaders such as BaiduNetdisk.
+[Transmission's documentation](docs/README.md) is currently out-of-date, but the team has recently begun a new project to update it and is looking for volunteers. If you're interested, please feel free to submit pull requests!
 
-## Build (Only for Ubuntu ≥22.04)
+## Command line interface notes
 
-```
-    $ sudo apt update
-    $ sudo apt install build-essential automake autoconf cmake libtool pkg-config intltool libcurl4-openssl-dev libglib2.0-dev libevent-dev libminiupnpc-dev libgtk-3-dev libgtkmm-3.0-dev libglibmm-2.4-dev libssl-dev libsystemd-dev
-    $ git clone --recurse-submodules https://github.com/zyjking/Transmission-modified Transmission
-    $ cd Transmission
-    $ cmake -DCMAKE_BUILD_TYPE=Release .
-    $ cmake --build .
-    $ sudo cmake --install .
-```
+Transmission is fully supported in transmission-remote, the preferred cli client.
 
-## For systemctl service
+Three standalone tools to examine, create, and edit .torrent files exist: transmission-show, transmission-create, and transmission-edit, respectively.
 
-In ```/lib/systemd/system``` directory, create a file named ```transmission-daemon.service``` with following content.  
-Also, ensure you have created user ```transmission``` or alternative.
+Prior to development of transmission-remote, the standalone client transmission-cli was created. Limited to a single torrent at a time, transmission-cli is deprecated and exists primarily to support older hardware dependent upon it. In almost all instances, transmission-remote should be used instead.
 
-```
-[Unit]
-Description=Transmission BitTorrent Daemon
-Wants=network-online.target
-After=network-online.target
+Different distributions may choose to package any or all of these tools in one or more separate packages.
 
-[Service]
-User=transmission
-Type=notify
-ExecStart=/usr/local/bin/transmission-daemon -f --log-level=error
-ExecReload=/bin/kill -s HUP $MAINPID
-NoNewPrivileges=true
-MemoryDenyWriteExecute=true
-ProtectSystem=true
-PrivateTmp=true
+## Building
 
-[Install]
-WantedBy=multi-user.target
+Transmission has an Xcode project file (Transmission.xcodeproj) for building in Xcode.
+
+For a more detailed description, and dependencies, visit [How to Build Transmission](docs/Building-Transmission.md) in docs
+
+### Building a Transmission release from the command line
+
+```bash
+$ tar xf transmission-4.0.6.tar.xz
+$ cd transmission-4.0.6
+# Use -DCMAKE_BUILD_TYPE=RelWithDebInfo to build optimized binary with debug information. (preferred)
+# Use -DCMAKE_BUILD_TYPE=Release to build full optimized binary.
+$ cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+$ cd build
+$ cmake --build .
+$ sudo cmake --install .
 ```
 
-## For init.d script
+### Building Transmission from the nightly builds
 
-In ```/etc/init.d``` directory, create a file named ```transmission-daemon``` with the following content.  
+Download a tarball from https://build.transmissionbt.com/job/trunk-linux/ and follow the steps from the previous section.
 
+If you're new to building programs from source code, this is typically easier than building from Git.
+
+### Building Transmission from Git (first time)
+
+```bash
+$ git clone --recurse-submodules https://github.com/transmission/transmission Transmission
+$ cd Transmission
+# Use -DCMAKE_BUILD_TYPE=RelWithDebInfo to build optimized binary with debug information. (preferred)
+# Use -DCMAKE_BUILD_TYPE=Release to build full optimized binary.
+$ cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+$ cd build
+$ cmake --build .
+$ sudo cmake --install .
 ```
-#!/bin/sh -e
-### BEGIN INIT INFO
-# Provides:          transmission-daemon
-# Required-Start:    $local_fs $remote_fs $network
-# Required-Stop:     $local_fs $remote_fs $network
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: Start or stop the transmission-daemon.
-# Description:       Enable service provided by transmission-daemon.
-### END INIT INFO
 
-NAME=transmission-daemon
-DAEMON=/usr/bin/$NAME
-USER=debian-transmission
-STOP_TIMEOUT=30
+### Building Transmission from Git (updating)
 
-export PATH="${PATH:+$PATH:}/sbin"
-
-[ -x $DAEMON ] || exit 0
-
-[ -e /etc/default/$NAME ] && . /etc/default/$NAME
-
-. /lib/lsb/init-functions
-
-start_daemon () {
-    if [ $ENABLE_DAEMON != 1 ]; then
-        log_progress_msg "(disabled)"
-		log_end_msg 255 || true
-    else    
-        start-stop-daemon --start \
-        --chuid $USER \
-		$START_STOP_OPTIONS \
-        --exec $DAEMON -- $OPTIONS || log_end_msg $?
-		log_end_msg 0
-    fi
-}
-
-case "$1" in
-    start)
-        log_daemon_msg "Starting bittorrent daemon" "$NAME"
-        start_daemon
-        ;;
-    stop)
-        log_daemon_msg "Stopping bittorrent daemon" "$NAME"
-        start-stop-daemon --stop --quiet \
-            --exec $DAEMON --retry $STOP_TIMEOUT \
-            --oknodo || log_end_msg $?
-        log_end_msg 0
-        ;;
-    reload)
-        log_daemon_msg "Reloading bittorrent daemon" "$NAME"
-        start-stop-daemon --stop --quiet \
-            --exec $DAEMON \
-            --oknodo --signal 1 || log_end_msg $?
-        log_end_msg 0
-        ;;
-    restart|force-reload)
-        log_daemon_msg "Restarting bittorrent daemon" "$NAME"
-        start-stop-daemon --stop --quiet \
-            --exec $DAEMON --retry $STOP_TIMEOUT \
-            --oknodo || log_end_msg $?
-        start_daemon
-        ;;
-    status)
-        status_of_proc "$DAEMON" "$NAME" && exit 0 || exit $?
-        ;;
-    *)
-        log_action_msg "Usage: /etc/init.d/$NAME {start|stop|reload|force-reload|restart|status}" || true
-        exit 2
-        ;;
-esac
-
-exit 0
+```bash
+$ cd Transmission/build
+$ cmake --build . -t clean
+$ git submodule foreach --recursive git clean -xfd
+$ git pull --rebase --prune
+$ git submodule update --init --recursive
+$ cmake --build .
+$ sudo cmake --install .
 ```
+
+## Contributing
+
+### Code Style
+
+You would want to setup your editor to make use of the .clang-format file located in the root of this repository and the eslint/prettier rules in web/package.json.
+
+If for some reason you are unwilling or unable to do so, there is a shell script which you can use: `./code_style.sh`
+
+### Translations
+
+See [language translations](docs/Translating.md).
+
+## Sponsors
+
+<table>
+ <tbody>
+  <tr>
+   <td align="center"><img alt="[MacStadium]" src="https://uploads-ssl.webflow.com/5ac3c046c82724970fc60918/5c019d917bba312af7553b49_MacStadium-developerlogo.png" height="30"/></td>
+   <td>macOS CI builds are running on a M1 Mac Mini provided by <a href="https://www.macstadium.com/company/opensource">MacStadium</a></td>
+  </tr>
+  <tr>
+   <td align="center"><img alt="[SignPath]" src="https://avatars.githubusercontent.com/u/34448643" height="30"/></td>
+   <td>Free code signing on Windows provided by <a href="https://signpath.io/?utm_source=foundation&utm_medium=github&utm_campaign=transmission">SignPath.io</a>, certificate by <a href="https://signpath.org/?utm_source=foundation&utm_medium=github&utm_campaign=transmission">SignPath Foundation</a></td>
+  </tr>
+ </tbody>
+</table>
