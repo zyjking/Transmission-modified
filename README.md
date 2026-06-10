@@ -23,7 +23,7 @@ Block bad offline downloaders such as BaiduNetdisk.
 ## Sample of a systemd unit file
 
 Locate the ```/usr/lib/systemd/system``` directory and create a file named ```transmission-daemon.service``` with the following content.  
-Make sure the user ```transmission``` exists, or use an other user as alternative.
+Make sure the user ```transmission``` exists, or use another user as an alternative.
 
 ```
 [Unit]
