@@ -1426,7 +1426,7 @@ void create_bit_torrent_peer(
     }
 	
 	auto const bad_peer = result.peer_id.value();
-    const std::regex filter("^-(XL|SD|XF|QD|BN|DL|SP|DT|HP|XM|GT0002|GT0003|LT1220|LT2070)");
+    const std::regex filter("^-(XL|XF|SD|QD|BN|DL|TS|DT|XM|HP|GT0002|GT0003|LT1220|LT2070)");
     if (std::regex_search(bad_peer.begin(), bad_peer.end(), filter)){
         tr_logAddTraceSwarm(swarm, fmt::format("bad peer {} tried to reconnect", info->display_name()));
         return false;

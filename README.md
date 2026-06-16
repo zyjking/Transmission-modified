@@ -4,11 +4,11 @@ This is a modified version of the Transmission BitTorrent client, based on the o
 
 ## What can it do
 
-Block bad clients such as Thunder (Xunlei).  
-Block P2P media players such as Xfplay.  
-Block bad offline downloaders such as BaiduNetdisk.
+- Block bad clients such as [Thunder (Xunlei)](https://ir.xunlei.com/).  
+- Block P2P media players such as [Xfplay](https://www.xfplay.com/en/index.html).  
+- Block bad offline downloaders such as [BaiduNetdisk](https://pan.baidu.com/).
 
-## Build (Only for Ubuntu ≥22.04)
+## Build (Only for Ubuntu ≥20.04)
 
 ```
     $ sudo apt update
@@ -23,7 +23,7 @@ Block bad offline downloaders such as BaiduNetdisk.
 ## Sample of a systemd unit file
 
 Locate the ```/usr/lib/systemd/system``` directory and create a file named ```transmission-daemon.service``` with the following content.  
-Make sure the user ```transmission``` exists, or use an other user as alternative.
+Make sure the user ```transmission``` exists, or use another user as an alternative.
 
 ```
 [Unit]
@@ -35,11 +35,19 @@ After=network-online.target
 User=transmission
 Type=notify
 ExecStart=/usr/local/bin/transmission-daemon -f --log-level=error
-ExecReload=/bin/kill -s HUP $MAINPID
-NoNewPrivileges=true
+CapabilityBoundingSet=
+LockPersonality=true
 MemoryDenyWriteExecute=true
-ProtectSystem=true
+NoNewPrivileges=true
 PrivateTmp=true
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHostname=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectProc=invisible
+ProtectSystem=true
+SystemCallArchitectures=native
 
 [Install]
 WantedBy=multi-user.target

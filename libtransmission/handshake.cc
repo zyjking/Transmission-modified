@@ -342,7 +342,7 @@ ReadState tr_handshake::read_peer_id(tr_peerIo* peer_io)
     tr_clientForId(std::data(client), std::size(client), peer_id);
     tr_logAddTraceHand(this, fmt::format("peer-id is '{}' ... isIncoming is {}", std::data(client), is_incoming()));
 
-	const std::regex filter("^-(XL|SD|XF|QD|BN|DL|SP|DT|HP|XM|GT0002|GT0003|LT1220|LT2070)");
+	const std::regex filter("^-(XL|XF|SD|QD|BN|DL|TS|DT|XM|HP|GT0002|GT0003|LT1220|LT2070)");
     if (std::regex_search(peer_id.begin(), peer_id.end(), filter)){
         return ReadState::Err;
     }
